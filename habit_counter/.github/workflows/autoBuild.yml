@@ -1,0 +1,33 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches:
+      - main  # or your main branch name
+
+jobs:
+  build:
+    name: Build and Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.9'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi
+
+      - name: Upload Release APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/app/outputs/apk/release/*
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.BUILD_TOKEN }}
