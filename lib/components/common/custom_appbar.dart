@@ -1,12 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
+import 'package:habit_counter/main.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final List<Widget>? actions;
   final Widget? leading;
 
   const CustomAppBar({
     Key? key,
-    this.actions,
     this.leading,
   }) : super(key: key);
 
@@ -17,6 +18,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return AppBar(
+      elevation:4,
+      actions: [
+        Transform.scale(
+          scale: 0.5,
+          child: Switch(
+            value: themeNotifier.isDarkMode,
+            onChanged: (value) {
+              themeNotifier.toggleTheme(value);
+            },
+          ),
+        ),
+      ],
       backgroundColor: theme.appBarTheme.backgroundColor ??
           (isDark ? Colors.grey[900] : Colors.white),
       iconTheme: theme.iconTheme,
@@ -31,8 +44,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       leading: leading,
-      actions: actions,
-      elevation: 2,
     );
   }
 

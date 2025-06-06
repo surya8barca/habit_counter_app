@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habit_counter/components/alerts/add_habit_alert.dart';
 import 'package:habit_counter/components/common/custom_appbar.dart';
 import 'package:habit_counter/data/static_data.dart';
 import 'package:habit_counter/models/habit_model.dart';
@@ -11,12 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void _addNewHabit() {
-    int newIndex = MyListData.habits.length + 1;
-    MyListData.addItem(HabitModel(habitDesc: 'Note $newIndex', daysCount: 0));
-    setState(() {});
-  }
-
   void _deleteHabit(int index) {
     MyListData.removeItem(index);
     setState(() {});
@@ -117,7 +112,13 @@ class _HomeState extends State<Home> {
               ),
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewHabit,
+        onPressed: () {
+          AddNewHabit.show(context, (description) {
+            MyListData.addItem(
+                HabitModel(habitDesc: description, daysCount: 0));
+            setState(() {});
+          });
+        },
         child: Icon(
           Icons.add,
           size: screenWidth * 0.07,

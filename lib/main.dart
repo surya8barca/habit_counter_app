@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:habit_counter/components/common/theme_notifier.dart';
 import 'package:habit_counter/components/home/home.dart';
+
+final ThemeNotifier themeNotifier = ThemeNotifier();
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +13,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (context, currentMode, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Habit App',
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.indigo,
+            scaffoldBackgroundColor: Colors.white,
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Colors.indigo,
+            ),
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.indigo,
+            scaffoldBackgroundColor: Colors.black,
+            cardColor: const Color(0xFF1E1E1E),
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Colors.indigo,
+            ),
+          ),
+          themeMode: themeNotifier.value,
+          home: const Home(),
+        );
+      },
     );
   }
 }
