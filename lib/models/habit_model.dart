@@ -1,5 +1,12 @@
-class HabitModel {
+import 'package:hive/hive.dart';
+
+part 'habit_model.g.dart';
+
+@HiveType(typeId: 0)
+class HabitModel extends HiveObject {
+  @HiveField(0)
   final String habitDesc;
+  @HiveField(1)
   int daysCount;
 
   HabitModel({required this.habitDesc, required this.daysCount});

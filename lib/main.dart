@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:habit_counter/components/common/theme_notifier.dart';
 import 'package:habit_counter/components/home/home.dart';
+import 'package:habit_counter/models/habit_model.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 final ThemeNotifier themeNotifier = ThemeNotifier();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  Hive.registerAdapter(HabitModelAdapter());
+
+  await Hive.openBox<HabitModel>('habits');
   runApp(const MyApp());
 }
 
