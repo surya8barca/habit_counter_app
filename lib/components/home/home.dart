@@ -12,19 +12,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  MyListData mylistdata = MyListData();
+
   void _deleteHabit(int index) {
-    MyListData.removeItem(index);
+    mylistdata.removeItem(index);
     setState(() {});
   }
 
   void _incrementDays(int index) {
-    MyListData.incrementCount(index);
+    mylistdata.incrementCount(index);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final habits = MyListData.habits;
+    final habits = mylistdata.habits;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final padding = screenWidth * 0.05;
@@ -114,8 +116,8 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           AddNewHabit.show(context, (description) {
-            MyListData.addItem(
-                HabitModel(habitDesc: description, daysCount: 0));
+            mylistdata
+                .addItem(HabitModel(habitDesc: description, daysCount: 0));
             setState(() {});
           });
         },

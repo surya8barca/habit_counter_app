@@ -1,26 +1,27 @@
+import 'package:flutter/material.dart';
 import 'package:habit_counter/models/habit_model.dart';
+import 'package:hive/hive.dart';
 
-class MyListData {
-  static List<HabitModel> habits = [];
+class MyListData extends ChangeNotifier {
+  final Box<HabitModel> _habitBox = Hive.box('habits');
 
-  static void addItem(HabitModel habit) {
-    habits.add(habit);
+  void addItem(HabitModel habit) {
+    _habitBox.add(habit);
+    notifyListeners();
   }
 
-  static void removeItem(int index) {
-    habits.removeAt(index);
+  void removeItem(int index) {
+    _habitBox.deleteAt(index);
   }
 
-  static List<HabitModel> getAllHabits() {
-    return habits;
-  }
+  List<HabitModel> get habits => _habitBox.values.toList();
 
-  static void incrementCount(int index) {
-    habits[index].daysCount++;
+  void incrementCount(int index) {
+    final habit = _habitBox.getAt(index);
+    if (habit != null) {
+      habit.daysCount += 1;
+      habit.save();
+      notifyListeners();
+    }
   }
-
-  static void clearItems() {
-    habits.clear();
-  }
-
 }
