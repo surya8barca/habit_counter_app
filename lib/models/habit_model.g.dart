@@ -19,17 +19,20 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
     return HabitModel(
       habitDesc: fields[0] as String,
       daysCount: fields[1] as int,
+      lastUpdatedDate: fields[2] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HabitModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.habitDesc)
       ..writeByte(1)
-      ..write(obj.daysCount);
+      ..write(obj.daysCount)
+      ..writeByte(2)
+      ..write(obj.lastUpdatedDate);
   }
 
   @override

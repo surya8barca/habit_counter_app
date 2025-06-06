@@ -86,7 +86,15 @@ class _HomeState extends State<Home> {
                                 ),
                                 SizedBox(height: screenHeight * 0.005),
                                 Text(
-                                  'Count: ${item.daysCount}',
+                                  'Total Count: ${item.daysCount}',
+                                  style: TextStyle(
+                                    fontSize: countFontSize,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                SizedBox(height: screenHeight * 0.005),
+                                Text(
+                                  'Last updated: ${item.lastUpdatedDate ?? 'Not Available'}',
                                   style: TextStyle(
                                     fontSize: countFontSize,
                                     color: Colors.grey[700],
@@ -116,8 +124,8 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           AddNewHabit.show(context, (description) {
-            mylistdata
-                .addItem(HabitModel(habitDesc: description, daysCount: 0));
+            mylistdata.addItem(HabitModel(
+                habitDesc: description, daysCount: 0, lastUpdatedDate: ''));
             setState(() {});
           });
         },

@@ -6,6 +6,7 @@ class MyListData extends ChangeNotifier {
   final Box<HabitModel> _habitBox = Hive.box('habits');
 
   void addItem(HabitModel habit) {
+    habit.lastUpdatedDate = formatDate(DateTime.now());
     _habitBox.add(habit);
     notifyListeners();
   }
@@ -20,8 +21,16 @@ class MyListData extends ChangeNotifier {
     final habit = _habitBox.getAt(index);
     if (habit != null) {
       habit.daysCount += 1;
+      habit.lastUpdatedDate = formatDate(DateTime.now());
       habit.save();
       notifyListeners();
     }
+  }
+
+  String formatDate(DateTime date) {
+    final day = date.day.toString().padLeft(2, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    final year = date.year.toString();
+    return '$day/$month/$year';
   }
 }
