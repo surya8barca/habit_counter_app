@@ -37,10 +37,41 @@ class MyListData extends ChangeNotifier {
     }
   }
 
+  void addStaticData() {
+    for (var habit in test_data) {
+      _habitBox.add(habit);
+      notifyListeners();
+    }
+  }
+
   String formatDate(DateTime date) {
     final day = date.day.toString().padLeft(2, '0');
     final month = date.month.toString().padLeft(2, '0');
     final year = date.year.toString();
     return '$day/$month/$year';
   }
+
+  List<HabitModel> test_data = [
+    HabitModel(habitType: 'daily', habitDesc: 'staticData', daysCount: [
+      2,
+      3,
+      4,
+      1,
+      4,
+      5,
+      2,
+      2,
+      5
+    ], lastUpdatedDate: [
+      '08/06/2025',
+      '09/06/2025',
+      '10/06/2025',
+      '11/06/2025',
+      '12/06/2025',
+      '13/06/2025',
+      '14/06/2025',
+      '15/06/2025',
+      '16/06/2025'
+    ])
+  ];
 }

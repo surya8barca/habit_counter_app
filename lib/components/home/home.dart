@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:habit_counter/components/alerts/add_habit_alert.dart';
 import 'package:habit_counter/components/common/custom_appbar.dart';
-import 'package:habit_counter/data/static_data.dart';
+import 'package:habit_counter/components/common/data_card_column.dart';
+import 'package:habit_counter/service/habitdb_service.dart';
 import 'package:habit_counter/models/habit_model.dart';
 
 class Home extends StatefulWidget {
@@ -24,6 +25,18 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  void _addStaticData() {
+    mylistdata.addStaticData();
+    setState(() {});
+  }
+
+  void _showAnalysis(int index) {
+    print(mylistdata.habits.elementAt(index).daysCount);
+    print(mylistdata.habits.elementAt(index).lastUpdatedDate);
+    print(mylistdata.habits.elementAt(index).habitType);
+    print(mylistdata.habits.elementAt(index).habitDesc);
+  }
+
   @override
   Widget build(BuildContext context) {
     final habits = mylistdata.habits;
@@ -32,6 +45,8 @@ class _HomeState extends State<Home> {
     final padding = screenWidth * 0.05;
     final titleFontSize = screenWidth * 0.05;
     final countFontSize = screenWidth * 0.04;
+    final extraDetailsFontSize = screenWidth * 0.025;
+    final iconButtonSize = screenWidth * 0.06;
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -43,12 +58,20 @@ class _HomeState extends State<Home> {
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(padding),
-                    child: Text(
-                      'No notes added',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: titleFontSize,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'No notes added',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: titleFontSize,
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.005),
+                        ElevatedButton(
+                            onPressed: _addStaticData,
+                            child: Text('Add Static Data'))
+                      ],
                     ),
                   ),
                 ),
@@ -71,52 +94,67 @@ class _HomeState extends State<Home> {
                         vertical: screenHeight * 0.015,
                         horizontal: screenWidth * 0.04,
                       ),
-                      child: Row(
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.habitDesc,
-                                  style: TextStyle(
-                                    fontSize: titleFontSize,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DataCardColumn(
+                                  item: item,
+                                  titleFontSize: titleFontSize,
+                                  screenHeight: screenHeight,
+                                  countFontSize: countFontSize,
+                                  extraDetailsFontSize: extraDetailsFontSize,
+                                  screenWidth: screenWidth,
                                 ),
-                                SizedBox(height: screenHeight * 0.005),
-                                Text(
-                                  item.habitType.contains('daily')
-                                      ? 'Today\'s Count:' +
-                                          '${item.daysCount.elementAt(item.daysCount.length - 1)}'
-                                      : 'Total Count:' +
-                                          '${item.daysCount.elementAt(item.daysCount.length - 1)}',
-                                  style: TextStyle(
-                                    fontSize: countFontSize,
-                                    color: Colors.grey[700],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.add),
+                                    iconSize: iconButtonSize,
+                                    onPressed: () => _incrementDays(index),
                                   ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    iconSize: iconButtonSize,
+                                    color: Colors.redAccent,
+                                    onPressed: () => _deleteHabit(index),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenHeight * 0.005),
+                          Transform.scale(
+                            scale: 0.75,
+                            child: OutlinedButton(
+                              onPressed: () => _showAnalysis(index),
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(screenWidth * 0.02),
                                 ),
-                                SizedBox(height: screenHeight * 0.005),
-                                Text(
-                                  'Last updated: ${item.lastUpdatedDate.isEmpty ? 'Not Available' : item.lastUpdatedDate.elementAt(item.daysCount.length - 1)}',
-                                  style: TextStyle(
-                                    fontSize: countFontSize,
-                                    color: Colors.grey[700],
+                                padding: EdgeInsets.all(screenWidth * 0.02),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize
+                                    .min, // Keeps the button compact
+                                children: [
+                                  Text(
+                                    'Analysis',
+                                    style: TextStyle(fontSize: countFontSize),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: screenWidth * 0.02),
+                                  Icon(Icons.analytics),
+                                ],
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            iconSize: screenWidth * 0.07,
-                            onPressed: () => _incrementDays(index),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            iconSize: screenWidth * 0.07,
-                            color: Colors.redAccent,
-                            onPressed: () => _deleteHabit(index),
                           ),
                         ],
                       ),
