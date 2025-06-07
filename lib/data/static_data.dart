@@ -20,22 +20,16 @@ class MyListData extends ChangeNotifier {
   void incrementCount(int index) {
     final habit = _habitBox.getAt(index);
     if (habit != null) {
-      print(habit.habitType);
-      print(habit.daysCount);
-      print(habit.lastUpdatedDate);
       if (habit.lastUpdatedDate[habit.lastUpdatedDate.length - 1] ==
           formatDate(DateTime.now())) {
-        print('same date');
         habit.daysCount[habit.daysCount.length - 1] += 1;
       } else {
-        print('different date');
         if (habit.habitType == 'daily') {
           habit.daysCount.add(1);
           habit.lastUpdatedDate.add(formatDate(DateTime.now()));
         } else {
           habit.daysCount[0] += 1;
-          habit.lastUpdatedDate[0] =
-              formatDate(DateTime.now());
+          habit.lastUpdatedDate[0] = formatDate(DateTime.now());
         }
       }
       habit.save();
