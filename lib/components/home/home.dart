@@ -86,7 +86,11 @@ class _HomeState extends State<Home> {
                                 ),
                                 SizedBox(height: screenHeight * 0.005),
                                 Text(
-                                  'Total Count: ${item.daysCount}',
+                                  item.habitType.contains('daily')
+                                      ? 'Today\'s Count:' +
+                                          '${item.daysCount.elementAt(item.daysCount.length - 1)}'
+                                      : 'Total Count:' +
+                                          '${item.daysCount.elementAt(item.daysCount.length - 1)}',
                                   style: TextStyle(
                                     fontSize: countFontSize,
                                     color: Colors.grey[700],
@@ -94,7 +98,7 @@ class _HomeState extends State<Home> {
                                 ),
                                 SizedBox(height: screenHeight * 0.005),
                                 Text(
-                                  'Last updated: ${item.lastUpdatedDate ?? 'Not Available'}',
+                                  'Last updated: ${item.lastUpdatedDate.isEmpty ? 'Not Available' : item.lastUpdatedDate.elementAt(item.daysCount.length - 1)}',
                                   style: TextStyle(
                                     fontSize: countFontSize,
                                     color: Colors.grey[700],
@@ -123,9 +127,12 @@ class _HomeState extends State<Home> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AddNewHabit.show(context, (description) {
+          AddNewHabit.show(context, (description, habitType) {
             mylistdata.addItem(HabitModel(
-                habitDesc: description, daysCount: 0, lastUpdatedDate: ''));
+                habitType: habitType,
+                habitDesc: description,
+                daysCount: [0],
+                lastUpdatedDate: []));
             setState(() {});
           });
         },

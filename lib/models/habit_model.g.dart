@@ -17,21 +17,24 @@ class HabitModelAdapter extends TypeAdapter<HabitModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HabitModel(
+      habitType: fields[1] as String,
       habitDesc: fields[0] as String,
-      daysCount: fields[1] as int,
-      lastUpdatedDate: fields[2] as String?,
+      daysCount: (fields[2] as List).cast<int>(),
+      lastUpdatedDate: (fields[3] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, HabitModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.habitDesc)
       ..writeByte(1)
-      ..write(obj.daysCount)
+      ..write(obj.habitType)
       ..writeByte(2)
+      ..write(obj.daysCount)
+      ..writeByte(3)
       ..write(obj.lastUpdatedDate);
   }
 

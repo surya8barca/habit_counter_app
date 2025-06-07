@@ -7,12 +7,16 @@ class HabitModel extends HiveObject {
   @HiveField(0)
   final String habitDesc;
   @HiveField(1)
-  int daysCount;
+  final String habitType;
   @HiveField(2)
-  String? lastUpdatedDate;
+  List<int> daysCount;
+  @HiveField(3)
+  List<String> lastUpdatedDate;
 
-  HabitModel(
-      {required this.habitDesc,
-      required this.daysCount,
-      required this.lastUpdatedDate});
+  HabitModel({
+    required this.habitType,
+    required this.habitDesc,
+    required this.daysCount,
+    required this.lastUpdatedDate,
+  });
 }

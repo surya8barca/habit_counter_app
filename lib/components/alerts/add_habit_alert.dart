@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class AddNewHabit extends StatefulWidget {
-  final void Function(String description) onAdd;
+  final void Function(String description, String habitType) onAdd;
   const AddNewHabit({super.key, required this.onAdd});
 
   @override
   State<AddNewHabit> createState() => _AddNewHabitState();
 
-  static void show(BuildContext context, void Function(String title) onAdd) {
+  static void show(BuildContext context,
+      void Function(String description, String habitType) onAdd) {
     Alert(
       context: context,
       title: "Add Habit",
@@ -19,19 +20,21 @@ class AddNewHabit extends StatefulWidget {
 }
 
 class _AddNewHabitState extends State<AddNewHabit> {
-
   final TextEditingController _controller = TextEditingController();
   String? _errorText;
+  String _selectedType = 'overall';
+  List<String> _counterTypes = ['daily', 'overall'];
 
   void _submit() {
-    final title = _controller.text.trim();
-    if (title.isEmpty) {
+    final description = _controller.text.trim();
+    if (description.isEmpty) {
       setState(() => _errorText = "Description cannot be empty");
     } else {
-      widget.onAdd(title);
-      Navigator.pop(context); 
+      widget.onAdd(description, _selectedType);
+      Navigator.pop(context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,6 +49,23 @@ class _AddNewHabitState extends State<AddNewHabit> {
           ),
           autofocus: true,
           onSubmitted: (_) => _submit(),
+        ),
+        const SizedBox(height: 20),
+        DropdownButton<String>(
+          value: _selectedType,
+          hint: const Text("Select Type"),
+          isExpanded: true,
+          items: _counterTypes.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value[0].toUpperCase() + value.substring(1)),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedType = newValue!;
+            });
+          },
         ),
         const SizedBox(height: 20),
         ElevatedButton(
