@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:habit_counter/main.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
@@ -19,17 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       elevation:4,
-      actions: [
-        Transform.scale(
-          scale: 0.5,
-          child: Switch(
-            value: themeNotifier.isDarkMode,
-            onChanged: (value) {
-              themeNotifier.toggleTheme(value);
-            },
-          ),
-        ),
-      ],
+      actions: [],
       backgroundColor: theme.appBarTheme.backgroundColor ??
           (isDark ? Colors.grey[900] : Colors.white),
       iconTheme: theme.iconTheme,
