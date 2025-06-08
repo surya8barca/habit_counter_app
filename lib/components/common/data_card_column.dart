@@ -45,7 +45,7 @@ class DataCardColumn extends StatelessWidget {
         ),
         SizedBox(height: screenHeight * 0.01),
         Text(
-          'Last updated: ${item.lastUpdatedDate.isEmpty ? 'Not Available' : item.lastUpdatedDate.elementAt(item.daysCount.length - 1)}',
+          'Last updated: ${item.lastUpdatedDate.isEmpty ? 'Not Available' : item.lastUpdatedDate.elementAt(item.lastUpdatedDate.length - 1)}',
           style: TextStyle(
             fontSize: extraDetailsFontSize,
             color: Colors.grey[700],

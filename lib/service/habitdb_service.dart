@@ -29,7 +29,7 @@ class MyListData extends ChangeNotifier {
           habit.lastUpdatedDate.add(formatDate(DateTime.now()));
         } else {
           habit.daysCount[0] += 1;
-          habit.lastUpdatedDate[0] = formatDate(DateTime.now());
+          habit.lastUpdatedDate.add(formatDate(DateTime.now()));
         }
       }
       habit.save();
@@ -42,7 +42,11 @@ class MyListData extends ChangeNotifier {
     if (habit != null) {
       if (habit.habitType != 'daily') {
         habit.daysCount[0] = 0;
-        habit.lastUpdatedDate[0] = formatDate(DateTime.now());
+        if (habit.lastUpdatedDate[habit.lastUpdatedDate.length - 1] ==
+                formatDate(DateTime.now()) &&
+            habit.lastUpdatedDate.length > 1) {
+          habit.daysCount.removeLast();
+        }
       }
     }
     habit?.save();
@@ -64,7 +68,7 @@ class MyListData extends ChangeNotifier {
   }
 
   List<HabitModel> test_data = [
-    HabitModel(habitType: 'daily', habitDesc: 'staticData', daysCount: [
+    HabitModel(habitType: 'daily', habitDesc: 'Daily Static Data', daysCount: [
       2,
       3,
       4,
@@ -84,6 +88,23 @@ class MyListData extends ChangeNotifier {
       '14/06/2025',
       '15/06/2025',
       '16/06/2025'
-    ])
+    ]),
+    HabitModel(
+        habitType: 'overall',
+        habitDesc: 'Overall Static Data',
+        daysCount: [
+          3
+        ],
+        lastUpdatedDate: [
+          '08/06/2025',
+          '09/06/2025',
+          '10/06/2025',
+          '11/06/2025',
+          '12/06/2025',
+          '13/06/2025',
+          '14/06/2025',
+          '15/06/2025',
+          '16/06/2025'
+        ])
   ];
 }
