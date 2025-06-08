@@ -37,6 +37,18 @@ class MyListData extends ChangeNotifier {
     }
   }
 
+  void resetCount(int index) {
+    final habit = _habitBox.getAt(index);
+    if (habit != null) {
+      if (habit.habitType != 'daily') {
+        habit.daysCount[0] = 0;
+        habit.lastUpdatedDate[0] = formatDate(DateTime.now());
+      }
+    }
+    habit?.save();
+    notifyListeners();
+  }
+
   void addStaticData() {
     for (var habit in test_data) {
       _habitBox.add(habit);

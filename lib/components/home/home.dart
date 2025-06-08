@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:habit_counter/components/alerts/add_habit_alert.dart';
 import 'package:habit_counter/components/common/custom_appbar.dart';
 import 'package:habit_counter/components/common/data_card_column.dart';
+import 'package:habit_counter/components/screens/daily_analytics.dart';
+import 'package:habit_counter/components/screens/overall_analytics.dart';
 import 'package:habit_counter/service/habitdb_service.dart';
 import 'package:habit_counter/models/habit_model.dart';
 
@@ -30,11 +32,25 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
+  void _resetOverallCount(index) {
+    mylistdata.resetCount(index);
+    setState(() {});
+  }
+
   void _showAnalysis(int index) {
-    print(mylistdata.habits.elementAt(index).daysCount);
-    print(mylistdata.habits.elementAt(index).lastUpdatedDate);
-    print(mylistdata.habits.elementAt(index).habitType);
-    print(mylistdata.habits.elementAt(index).habitDesc);
+    if (mylistdata.habits[index].habitType == 'daily') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DailyHabitAnalytics(
+                  habit: mylistdata.habits.elementAt(index))));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OverallHabitAnalytics(
+                  habit: mylistdata.habits.elementAt(index))));
+    }
   }
 
   @override
@@ -122,7 +138,15 @@ class _HomeState extends State<Home> {
                                     iconSize: iconButtonSize,
                                     color: Colors.redAccent,
                                     onPressed: () => _deleteHabit(index),
-                                  )
+                                  ),
+                                  if (habits[index].habitType != 'daily')
+                                    IconButton(
+                                      icon: const Icon(Icons.restore),
+                                      iconSize: iconButtonSize,
+                                      color: Colors.redAccent,
+                                      onPressed: () =>
+                                          _resetOverallCount(index),
+                                    )
                                 ],
                               ),
                             ],
@@ -143,8 +167,7 @@ class _HomeState extends State<Home> {
                                 padding: EdgeInsets.all(screenWidth * 0.02),
                               ),
                               child: Row(
-                                mainAxisSize: MainAxisSize
-                                    .min, // Keeps the button compact
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     'Analysis',
