@@ -170,11 +170,14 @@ class _HomeState extends State<Home> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    'Analysis',
+                                    habits[index].habitType == 'daily' ?'Analysis':'Track',
                                     style: TextStyle(fontSize: countFontSize),
                                   ),
                                   SizedBox(width: screenWidth * 0.02),
-                                  Icon(Icons.analytics),
+                                  if (habits[index].habitType == 'daily')
+                                    Icon(Icons.analytics),
+                                  if (habits[index].habitType != 'daily')
+                                    Icon(Icons.calendar_month)
                                 ],
                               ),
                             ),

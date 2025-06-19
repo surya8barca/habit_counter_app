@@ -23,34 +23,46 @@ class _DailyHabitAnalyticsState extends State<DailyHabitAnalytics> {
         appBar: const CustomAppBar(),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Container(
-              child: SfCartesianChart(
-            primaryXAxis: CategoryAxis(
-                title: AxisTitle(
-              text: 'Dates',
-              textStyle: TextStyle(fontWeight: FontWeight.bold),
-            )),
-            primaryYAxis: NumericAxis(
-                title: AxisTitle(
-              text: 'Per Day Count',
-              textStyle: TextStyle(fontWeight: FontWeight.bold),
-            )),
-            enableAxisAnimation: true,
-            title: ChartTitle(
-              text: widget.habit.habitDesc,
-            ),
-            series: <CartesianSeries>[
-              LineSeries(
-                dataSource: List.generate(
-                    widget.habit.daysCount.length, (index) => index),
-                xValueMapper: (index, _) =>
-                    widget.habit.lastUpdatedDate[index].substring(0, 5),
-                yValueMapper: (index, _) => widget.habit.daysCount[index],
-                markerSettings: MarkerSettings(isVisible: true),
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-              )
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: Text(
+                  widget.habit.habitDesc,
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.05,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.cyan),
+                ),
+              ),
+              Expanded(
+                child: SfCartesianChart(
+                  primaryXAxis: CategoryAxis(
+                      title: AxisTitle(
+                    text: 'Dates',
+                    textStyle: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  primaryYAxis: NumericAxis(
+                      title: AxisTitle(
+                    text: 'Per Day Count',
+                    textStyle: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+                  enableAxisAnimation: true,
+                  series: <CartesianSeries>[
+                    LineSeries(
+                      dataSource: List.generate(
+                          widget.habit.daysCount.length, (index) => index),
+                      xValueMapper: (index, _) =>
+                          widget.habit.lastUpdatedDate[index].substring(0, 5),
+                      yValueMapper: (index, _) => widget.habit.daysCount[index],
+                      markerSettings: MarkerSettings(isVisible: true),
+                      dataLabelSettings: DataLabelSettings(isVisible: true),
+                    )
+                  ],
+                ),
+              ),
             ],
-          )),
+          ),
         ));
   }
 }
