@@ -12,6 +12,7 @@ void main() async {
   Hive.registerAdapter(HabitModelAdapter());
 
   await Hive.openBox<HabitModel>('habits');
+
   runApp(const MyApp());
 }
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.indigo,
         ),
-      ),  
+      ),
       themeMode: ThemeMode.system,
       home: const Home(),
     );
